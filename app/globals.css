@@ -1,0 +1,114 @@
+/*@import url('https://use.typekit.net/ser7odr.css');*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+html {
+  --cursor-color: #fff
+}
+
+html.dark-mode {
+  --cursor-color: #fff
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: #23242D;
+  /*font-family: "space-grotesk-variable", sans-serif;*/
+  /*font-variation-settings: "wght" 400;*/
+}
+
+body main {
+  position: relative;
+  width: 100vw;
+  max-width: 1320px;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.blooming-sun {
+  background: #32365E;
+  border-radius: 50%;
+  position: absolute;
+  width: 399px;
+  height: 173px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-box-shadow: 10px 10px 200px 200px rgba(50,54,94,1);
+  -moz-box-shadow: 10px 10px 200px 200px rgba(50,54,94,1);
+  box-shadow: 10px 10px 200px 200px rgba(50,54,94,1);
+  z-index: 4;
+}
+
+.blooming-sun .full-circle {
+  position: absolute;
+  text-align: center;
+  font-size: 500px;
+  line-height: 100px;
+  color: #24252E;
+  font-weight: 700;
+  left: -250px;
+  top: 50px;
+  user-select: none;
+  cursor: default;
+}
+
+.content-container h1 {
+  font-size: 150px;
+  font-weight: 400;
+  z-index: 9;
+  position: absolute;
+  left: 0;
+  line-height: 145px;
+  letter-spacing: -15px;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.content-container h1::before {
+  content: '';
+  position: absolute;
+  left: -53px;
+  top: -53px;
+  z-index: -1;
+  width: 206px;
+  height: 206px;
+  outline: 90px solid #303459;
+  border-radius: 50%;
+}
+
+.square {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: red;
+  border-radius: 10%;
+  transition: transform 0.1s ease-out;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
