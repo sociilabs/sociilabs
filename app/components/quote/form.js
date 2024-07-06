@@ -6,7 +6,9 @@ const QuoteForm = () => {
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
-	const [typeOfProject, setTypeOfProject] = useState("");
+	const [buildingWebApp, setBuildingWebApp] = useState(false);
+	const [buildingMobileApp, setBuildingMobileApp] = useState(false);
+	const [dedicatedTeam, setDedicatedTeam] = useState(false);
 	const [additionalDetails, setAdditionalDetails] = useState("");
 	const [budget, setBudget] = useState("");
 	const [submitting, setSubmitting] = useState(false);
@@ -24,13 +26,16 @@ const QuoteForm = () => {
 				firstName,
 				lastName,
 				email,
-				typeOfProject,
+				buildingWebApp,
+				buildingMobileApp,
+				dedicatedTeam,
 				additionalDetails,
 				budget,
 			}),
 		});
-		const data = await response.json();
-		if (data.status === "ok") {
+		const data = response;
+		console.log(data);
+		if (data.status === 200) {
 			setSubmitted(true);
 		} else {
 			alert(data.error);
@@ -38,60 +43,112 @@ const QuoteForm = () => {
 		setSubmitting(false);
 	};
 
+	const toggleCheckboxes = (e) => {
+		if (e.target.name === 'buildingWebApp') {
+			setBuildingWebApp(!buildingWebApp);
+		} else if (e.target.name === 'buildingMobileApp') {
+			setBuildingMobileApp(!buildingMobileApp);
+		} else if (e.target.name === 'dedicatedTeam') {
+			setDedicatedTeam(!dedicatedTeam);
+		}
+	}
+
 	return (
 		<div className="container">
 			{submitted ? (
-				<h1>Thank you!</h1>
+				<div className={`px-4 py-8 text-center`}>
+					<p className={`text-lg text-center`}>
+						Thank you for your interest. We will get back to you asap!
+					</p>
+				</div>
 			) : (
-				<form class="p-0">
+				<form class="p-0" onSubmit={handleSubmit}>
 					<div className="grid gap-4 mb-4 grid-cols-2">
 						<div className="col-span-2 sm:col-span-1">
 							<label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-							<input type="text" name="firstName"
-							       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+							<input type="text" name="firstName" onChange={(e) => setFirstName(e.target.value)}
+							       className="bg-transparent border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
 							       required/>
 						</div>
 						<div className="col-span-2 sm:col-span-1">
 							<label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-							<input type="text" name="lastName"
-							       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+							<input type="text" name="lastName" onChange={(e) => setLastName(e.target.value)}
+							       className="bg-transparent border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
 							       required/>
-						</div>
-						<div className="col-span-2 sm:col-span-1">
-							<label htmlFor="category"
-							       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-							<select id="category"
-							        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-								<option selected="">Select category</option>
-								<option value="TV">TV/Monitors</option>
-								<option value="PC">PC</option>
-								<option value="GA">Gaming/Console</option>
-								<option value="PH">Phones</option>
-							</select>
 						</div>
 						<div className="col-span-2">
 							<label htmlFor="name"
 							       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-							<input type="email" name="email"
-							       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+							<input type="email" name="email" onChange={(e) => setEmail(e.target.value)}
+							       className="bg-transparent border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
 							       required/>
 						</div>
+						<div className={`col-span-2`}>
+							<label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">What are you looking for?</label>
+							<ul className="grid w-full gap-1 md:grid-cols-3">
+								<li>
+									<input type="checkbox" id="react-option" value="buildingWebApp" name="buildingWebApp" onChange={toggleCheckboxes} checked={buildingWebApp} className="hidden peer" />
+									<label htmlFor="react-option"
+									       className="inline-flex items-center justify-between w-full py-3 px-2.5 border-2 rounded-lg cursor-pointer border-gray-700 peer-checked:border-blue-600 hover:text-gray-200 peer-checked:text-gray-200 text-gray-400 bg-transparent hover:bg-gray-700">
+										<div className="block">
+											<div className="w-full text-lg font-semibold">Web App</div>
+											<div className="w-full text-sm">
+												Custom web applications tailored to meet your business needs
+											</div>
+										</div>
+									</label>
+								</li>
+								<li>
+									<input type="checkbox" id="flowbite-option" value="buildingMobileApp" name="buildingMobileApp" onChange={toggleCheckboxes} checked={buildingMobileApp} className="hidden peer"/>
+									<label htmlFor="flowbite-option"
+									       className="inline-flex items-center justify-between w-full py-3 px-2.5 border-2 rounded-lg cursor-pointer border-gray-700 peer-checked:border-blue-600 hover:text-gray-200 peer-checked:text-gray-200 text-gray-400 bg-transparent hover:bg-gray-700">
+										<div className="block">
+											<div className="w-full text-lg font-semibold">Mobile App</div>
+											<div className="w-full text-sm">
+												Innovative mobile apps designed for a seamless user experience
+											</div>
+										</div>
+									</label>
+								</li>
+								<li>
+									<input type="checkbox" id="angular-option" value="dedicatedTeam" name="dedicatedTeam" onChange={toggleCheckboxes} checked={dedicatedTeam} className="hidden peer"/>
+									<label htmlFor="angular-option"
+									       className="inline-flex items-center justify-between w-full py-3 px-2.5 border-2 rounded-lg cursor-pointer border-gray-700 peer-checked:border-blue-600 hover:text-gray-200 peer-checked:text-gray-200 text-gray-400 bg-transparent hover:bg-gray-700">
+										<div className="block">
+											<div className="w-full text-lg font-semibold">Dedicated Team</div>
+											<div className="w-full text-sm">
+												Expert teams dedicated to driving your business forward
+											</div>
+										</div>
+									</label>
+								</li>
+							</ul>
+						</div>
+						<div className={`col-span-2`}>
+							<label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">What&apos;s your estimated budget?</label>
+							<select id="countries" onChange={(e) => setBudget(e.target.value)}
+							        className="bg-transparent border border-gray-300 text-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500">
+								<option selected>Choose a budget</option>
+								<option value="BELOW_5K" className={`text-gray-900`}>Below $5K (USD)</option>
+								<option value="5K_TO_10K" className={`text-gray-900`}>$5K to $10K (USD)</option>
+								<option value="10K_TO_20K" className={`text-gray-900`}>$10K to $20K (USD)</option>
+								<option value="20K_TO_30K" className={`text-gray-900`}>$20K to $30K (USD)</option>
+								<option value="30K_AND_ABOVE" className={`text-gray-900`}>$30K (USD) and above</option>
+							</select>
+						</div>
 						<div className="col-span-2">
-							<label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
-								Description</label>
-							<textarea id="description" rows="4"
-							          class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							<label htmlFor="additionalDetails" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Additional Details</label>
+							<textarea id="additionalDetails" rows="4" name={`additionalDetails`} value={additionalDetails} onChange={(e) => setAdditionalDetails(e.target.value)}
+							          className="bg-transparent border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
 							          placeholder="Write product description here"></textarea>
 						</div>
 					</div>
-					<button type="submit"
-					        class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-						<svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-							<path fill-rule="evenodd"
-							      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-							      clip-rule="evenodd"></path></svg>
-						Add new product
-					</button>
+					<div className={`col-span-2 text-right mb-2`}>
+						<button type="submit"
+						        className="text-white inline-flex items-center bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-blue-800">
+							→ Request Quote
+						</button>
+					</div>
 				</form>
 			)}
 		</div>

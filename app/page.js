@@ -1,10 +1,11 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AnimatedCursor from "react-animated-cursor";
 import QuoteModal from "@/app/components/modal";
 import Link from "next/link";
 
 export default function Home() {
+  const [showQuoteModal, setShowQuoteModal] = useState(false);
   // useEffect(() => {
   //   document.addEventListener('mousemove', (e) => {
   //     const square = document.querySelector('.square');
@@ -12,9 +13,13 @@ export default function Home() {
   //   });
   // }, []);
 
+  const toggleModal = () => {
+    setShowQuoteModal(!showQuoteModal);
+  }
+
   return (
     <>
-      <QuoteModal />
+      {showQuoteModal && <QuoteModal toggleModal={toggleModal} />}
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
         <AnimatedCursor
           innerSize={8}
@@ -63,7 +68,7 @@ export default function Home() {
               </Link>
             </li>
             <li>
-              {/*<QuoteModal/>*/}
+              <button className={`px-6 py-2 bg-gray-700 border-2 rounded-full`} onClick={toggleModal}>Get a Quote</button>
             </li>
           </ul>
         </div>

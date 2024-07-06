@@ -1,0 +1,4 @@
+.modal-container {
+	background: rgb(50,54,94);
+	background: radial-gradient(circle, rgba(50,54,94,1) 0%, rgba(35,36,45,1) 28%, rgba(36,37,46,1) 46%);
+}
