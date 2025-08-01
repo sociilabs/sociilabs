@@ -14,7 +14,8 @@ export default function Home() {
   // }, []);
 
   const toggleModal = () => {
-    setShowQuoteModal(!showQuoteModal);
+    // setShowQuoteModal(!showQuoteModal);
+    window.location.href = 'https://form.typeform.com/to/uRoAeanX';
   }
 
   return (
