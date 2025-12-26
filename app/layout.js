@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   Intercom({
     app_id: 'p6d30xsk',
   });
-  
+
   return (
     <html lang="en">
       <body className={SpaceGrotesk.className}>{children}</body>
